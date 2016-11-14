@@ -9,7 +9,15 @@ int main(){
   Room *secondRoom = new Room("This is the second room");
 
   firstRoom->setExit(west, secondRoom);
-  firstRoom->getExitRoom(west)->printDescription();
+
+  char input[128];
+  cin >> input;
+  if(firstRoom->getExitRoom(input) != NULL){
+    firstRoom->getExitRoom(input)->printDescription();
+  }
+  else{
+    cout << "No such exit.";
+  }
 
   return 0;
 }

@@ -16,6 +16,11 @@ void Room::setExit(char* str, Room *room){
 }
 
 Room* Room::getExitRoom(char* exit){
-  //Check if such an exit exists!!!!! (Or is null returned automatically?)
-  return exits[exit];
+  //Check if such an exit exists!
+  if(exits.find(exit) != exits.end()){
+    return exits[exit];
+  }
+  else{
+    return 0;
+  }
 }
