@@ -17,13 +17,19 @@ public:
   const char* getDescription();
   const char* getDiscoveryDescription();
   const char* getLockedDescription();
+  const char* getShortDescription();
+  const char* getLongDescription();
   void setExit(char* str, Room *room);
   Room* getExitRoom(char* exit);
+  bool locked = false;
+  bool first = true;
+  Item *unlockItem = NULL;
+  vector<Item*> items;
+  
 private:
-  bool locked;
-  bool first;
   map<char*, Room*, CStrCmp> exits;
   const char* description;
   const char* discoveryDescription;
   const char* lockedDescription;
+  const char* getExitString();
 };
