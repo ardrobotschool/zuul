@@ -14,11 +14,12 @@ class Room{
 public:
   Room(const char* description, const char* discoveryDescription);
   Room(const char* description, const char* discoveryDescription, const char* lockedDescription);
-  const char* getDescription();
-  const char* getDiscoveryDescription();
-  const char* getLockedDescription();
-  const char* getShortDescription();
-  const char* getLongDescription();
+  void printDescription();
+  void printDiscoveryDescription();
+  void printLockedDescription();
+  void printShortDescription();
+  void printLongDescription();
+  void printItems();
   void setExit(char* str, Room *room);
   Room* getExitRoom(char* exit);
   bool locked = false;

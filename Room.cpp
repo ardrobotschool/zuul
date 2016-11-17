@@ -13,25 +13,27 @@ Room::Room(const char* newDescription, const char* newDiscoveryDescription, cons
   lockedDescription = newLockedDescription;
 }
 
-const char* Room::getDescription(){
-  return description;
+void Room::printDescription(){
+  cout << description;
 }
 
-const char* Room::getDiscoveryDescription(){
-  return discoveryDescription;
+void Room::printDiscoveryDescription(){
+  cout << discoveryDescription;
 }
 
-const char* Room::getLockedDescription(){
-  return lockedDescription;
+void Room::printLockedDescription(){
+  cout << lockedDescription;
 }
 
-const char* Room::getShortDescription(){
-  return description;
+void Room::printShortDescription(){
+  cout << description;
 }
 
-const char* Room::getLongDescription(){
+void Room::printLongDescription(){
   //Decide whether to just print it out or concatenate the cstrings...
 }
+
+
 
 void Room::setExit(char* str, Room *room){
   exits[str] = room;
