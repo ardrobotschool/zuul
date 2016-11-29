@@ -13,7 +13,7 @@ int main(){
   char input[128];
   cin >> input;
   if(firstRoom->getExitRoom(input) != NULL){
-    cout << firstRoom->getExitRoom(input)->getDiscoveryDescription() << endl;
+    firstRoom->getExitRoom(input)->printDiscoveryDescription();
   }
   else{
     cout << "No such exit.";

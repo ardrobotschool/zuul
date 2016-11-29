@@ -30,7 +30,35 @@ void Room::printShortDescription(){
 }
 
 void Room::printLongDescription(){
-  //Decide whether to just print it out or concatenate the cstrings...
+  cout << "You are " << description << endl;
+  printExitString();
+}
+
+void Room::printExitString(){
+  cout << "Exits:";
+  //Print out all the exits.
+  for(map<char*, Room*, CStrCmp>::iterator it = exits.begin(); it != exits.end(); it++){
+    cout << it->first;
+    if(it != --exits.end()){
+      cout << ", ";
+    }
+  }
+  cout << "." << endl;
+  //Also add items.
+  printItems();
+}
+
+void Room::printItems(){
+  if(!items.empty()){
+    cout << "Items here: ";
+    for(vector<Item*>::iterator it = items.begin(); it != items.end(); it++){
+      cout << (*it)->getDescription();
+      if(it != --items.end()){
+	cout << ", ";
+      }
+    }
+    cout << ".";
+  }
 }
 
 

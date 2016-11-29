@@ -1,6 +1,8 @@
 #include <iostream>
 #include <map>
 #include <cstring>
+#include <vector>
+#include "Item.hpp"
 
 using namespace std;
 
@@ -19,6 +21,7 @@ public:
   void printLockedDescription();
   void printShortDescription();
   void printLongDescription();
+  void printExitString();
   void printItems();
   void setExit(char* str, Room *room);
   Room* getExitRoom(char* exit);
