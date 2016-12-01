@@ -6,27 +6,17 @@ using namespace std;
 
 void createRooms(vector<Room*> &rooms);
 Room* getRoom(vector<Room*> &rooms, const char* description);
+void printWelcome(Room* currentRoom);
 
 int main(){
-  char west[] = "west";
   vector<Room*> rooms;
   createRooms(rooms);
   Room *hill = new Room("on the hilltop", "There is only emptiness ahead as far as the eye can see. You also see a hill to the east. It's not an easy climb"); //Winning room
   hill->setExit("west", getRoom(rooms, "in the front yard"));
   rooms.push_back(hill);
   getRoom(rooms, "in the front yard")->setExit("east", hill);
-  /*
-  someRoom->setExit(west, secondRoom);
 
-  char input[128];
-  cin >> input;
-  if(firstRoom->getExitRoom(input) != NULL){
-    firstRoom->getExitRoom(input)->printDiscoveryDescription();
-  }
-  else{
-    cout << "No such exit.";
-    }*/
-
+  
   return 0;
 }
 
@@ -153,4 +143,13 @@ Room* getRoom(vector<Room*> &rooms, const char* description){
     }
   }
   return NULL;
+}
+
+void printWelcome(Room *currentRoom){
+  cout << endl;
+  cout << "Welcome to the Adventure!" << endl;
+  cout << "You are a detective investigating this house. Reports have been received claiming that it is haunted. A power outage occured while you were in the dining room." << "\nIt has been twenty minutes and your eyes just barely started to adjust to the darkness. There is no siganl on your cellphone and its battery is about to die." << endl;
+  cout << "Type \"help\" for available commands." << endl;
+  cout << endl;
+  currentRoom->printLongDescription();
 }
