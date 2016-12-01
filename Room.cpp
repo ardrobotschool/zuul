@@ -1,11 +1,11 @@
 #include <iostream>
 #include "Room.hpp"
+#include <cstring>
 
 using namespace std;
 
-Room::Room(const char* newDescription, const char* newDiscoveryDescription){
-  description = newDescription;
-  discoveryDescription = newDiscoveryDescription;
+Room::Room(const char* newDescription, const char* newDiscoveryDescription) : description(newDescription), discoveryDescription(newDiscoveryDescription){
+  
 }
 //Now the constructor for a locked room:
 Room::Room(const char* newDescription, const char* newDiscoveryDescription, const char* newLockedDescription) : Room(newDescription, newDiscoveryDescription){
