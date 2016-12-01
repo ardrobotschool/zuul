@@ -59,4 +59,50 @@ void createRooms(vector<Room*> &rooms){
   rooms.push_back(hallway);
   frontyard = new Room("in the front yard", "There is only emptiness ahead as far as the eye can see. You also see a hill to the east. It's not an easy climb");
   rooms.push_back(frontyard);
+
+  // initialise room exits
+  outside->setExit("south", graveyard);
+  outside->setExit("west", bedroom);
+
+  bedroom->setExit("north", livingroom);
+  bedroom->setExit("east", outside);
+  bedroom->setExit("west", diningroom);
+
+  diningroom->setExit("east", bedroom);
+  diningroom->setExit("south", kitchen);
+  diningroom->setExit("north", theatre);
+  diningroom->setExit("west", basement);
+
+  basement->setExit("south", deeperbasement);
+  basement->setExit("east", diningroom);
+
+  kitchen->setExit("north", diningroom);
+
+  deeperbasement->setExit("north", basement);
+
+  theatre->setExit("south", diningroom);
+  theatre->setExit("east", livingroom);
+  theatre->setExit("north", library);
+
+  library->setExit("south", theatre);
+  library->setExit("west", computerlab);
+  library->setExit("east", reference);
+
+  reference->setExit("west", library);
+
+  computerlab->setExit("east", library);
+  computerlab->setExit("north", hallway);
+
+  hallway->setExit("south", computerlab);
+  hallway->setExit("east", frontyard);
+
+  frontyard->setExit("west", hallway);
+  frontyard->setExit("east", hill);
+
+  hill->setExit("west", frontyard);
+
+  livingroom->setExit("south", bedroom);
+  livingroom->setExit("west", theatre);
+
+  graveyard->setExit("north", outside);
 }
