@@ -16,6 +16,7 @@ class Room{
 public:
   Room(const char* description, const char* discoveryDescription);
   Room(const char* description, const char* discoveryDescription, const char* lockedDescription);
+  const char* getDescription();
   void printDescription();
   void printDiscoveryDescription();
   void printLockedDescription();
@@ -23,7 +24,7 @@ public:
   void printLongDescription();
   void printExitString();
   void printItems();
-  void setExit(char* str, Room *room);
+  void setExit(const char* str, Room *room);
   Room* getExitRoom(char* exit);
   bool locked = false;
   bool first = true;

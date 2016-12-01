@@ -13,6 +13,10 @@ Room::Room(const char* newDescription, const char* newDiscoveryDescription, cons
   lockedDescription = newLockedDescription;
 }
 
+const char* Room::getDescription(){
+  return description;
+}
+
 void Room::printDescription(){
   cout << description;
 }
@@ -63,8 +67,10 @@ void Room::printItems(){
 
 
 
-void Room::setExit(char* str, Room *room){
-  exits[str] = room;
+void Room::setExit(const char* str, Room *room){
+  char* temp = new char[sizeof(str)+1];
+  strcpy(temp, str);
+  exits[temp] = room;
 }
 
 Room* Room::getExitRoom(char* exit){ //Returns exit corresponding to given key; null if no such exit.

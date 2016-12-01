@@ -5,13 +5,16 @@
 using namespace std;
 
 void createRooms(vector<Room*> &rooms);
+Room* getRoom(vector<Room*> &rooms, const char* description);
 
 int main(){
   char west[] = "west";
   vector<Room*> rooms;
   createRooms(rooms);
-  rooms[0]->printDescription();
-  Room *hill = new Room("on the hilltop", "There is only emptiness ahead as far as the eye can see. You also see a hill to the east. It's not an easy climb");
+  Room *hill = new Room("on the hilltop", "There is only emptiness ahead as far as the eye can see. You also see a hill to the east. It's not an easy climb"); //Winning room
+  hill->setExit("west", getRoom(rooms, "in the front yard"));
+  rooms.push_back(hill);
+  getRoom(rooms, "in the front yard")->setExit("east", hill);
   /*
   someRoom->setExit(west, secondRoom);
 
@@ -97,12 +100,57 @@ void createRooms(vector<Room*> &rooms){
   hallway->setExit("east", frontyard);
 
   frontyard->setExit("west", hallway);
-  frontyard->setExit("east", hill);
+  //frontyard->setExit("east", hill);
 
-  hill->setExit("west", frontyard);
+  //hill->setExit("west", frontyard);
 
   livingroom->setExit("south", bedroom);
   livingroom->setExit("west", theatre);
 
   graveyard->setExit("north", outside);
+  
+  //Create all the items and their descriptions and add them to the rooms:
+  
+  kitchen->items.push_back(new Item("goblet", "As you grab the goblet, a ghost flies out of the wall and sets the whole room on fire. You realize that it must be cursed. Unfortunately, you cannot escape and die."));
+
+  Item* key = new Item("key");
+  key->setPickupDescription("What's this key for?");
+  deeperbasement->items.push_back(key);
+  library->unlockItem = key;
+
+  Item* candle = new Item("candle");
+  candle->setPickupDescription("The candle is burning steadily. It's not much, but it helps.");
+  livingroom->items.push_back(candle);
+  deeperbasement->unlockItem = candle;
+        
+  Item* flashlight = new Item("flashlight");
+  flashlight->setPickupDescription("The flashlight does not work. Perhaps the batteries are dead.");
+  bedroom->items.push_back(flashlight);
+        
+  Item* tableoflogarithms = new Item("tableoflogarithms");
+  hallway->unlockItem = tableoflogarithms;
+  reference->items.push_back(tableoflogarithms);
+        
+  reference->items.push_back(new Item("dictionary"));
+        
+  Item* calculator = new Item("calculator");
+  calculator->setPickupDescription("The calculator does not turn on. Perhaps the batteries are dead.");
+  computerlab->items.push_back(calculator);
+        
+  Item *satellitephone = new Item("satellitephone");
+  satellitephone->setPickupDescription("This phone has barely any charge left. There is no signal.");
+  computerlab->items.push_back(satellitephone);
+        
+  deeperbasement->items.push_back(new Item("cobra", "The cobra bites you as you try to grab it and you die shortly."));
+  livingroom->items.push_back(new Item("organ", "As you try to carry the organ, your spinal chord cannot handle the weight and snaps. Needless to say, you die."));
+}
+
+Room* getRoom(vector<Room*> &rooms, const char* description){
+  //Returns pointer to room with given description. (Assumed to exist.)
+  for(vector<Room*>::iterator it = rooms.begin(); it != rooms.end(); it++){
+    if(strcmp(description, (*it)->getDescription())==0){
+      return *it;
+    }
+  }
+  return NULL;
 }
