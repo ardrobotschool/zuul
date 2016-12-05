@@ -7,6 +7,7 @@ using namespace std;
 void createRooms(vector<Room*> &rooms);
 Room* getRoom(vector<Room*> &rooms, const char* description);
 void printWelcome(Room* currentRoom);
+void printHelp();
 
 int main(){
   vector<Room*> rooms;
@@ -152,4 +153,16 @@ void printWelcome(Room *currentRoom){
   cout << "Type \"help\" for available commands." << endl;
   cout << endl;
   currentRoom->printLongDescription();
+}
+
+void printHelp(){
+  cout << "You must find a way to get help." << endl;
+  coout << endl;
+  cout << "Your command words are:" << endl;
+  cout << "help" << endl;
+  cout << "go <exit>" << endl;
+  cout << "quit" << endl;
+  cout << "inventory" << endl;
+  cout << "take <item>" << endl;
+  cout << "drop <item>" << endl;
 }
