@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Room.hpp"
 #include <vector>
+#include <cctype>
 
 using namespace std;
 
@@ -10,6 +11,7 @@ void printWelcome(Room* currentRoom);
 void printHelp();
 
 int main(){
+  //Initialize rooms.
   vector<Room*> rooms;
   createRooms(rooms);
   Room *hill = new Room("on the hilltop", "There is only emptiness ahead as far as the eye can see. You also see a hill to the east. It's not an easy climb"); //Winning room
@@ -17,7 +19,23 @@ int main(){
   rooms.push_back(hill);
   getRoom(rooms, "in the front yard")->setExit("east", hill);
 
-  
+  cout << "Start typing your commands. Type \"help\" for a list of available commands." << endl;
+  char input[128];
+  bool done = false;
+
+  while(!done){
+    //Get input and convert to lower case.
+    cin.getline(input, 128);
+    for(int i = 0; input[i]; i++){
+      input[i] = tolower(input[i]);
+    }
+    
+    if(strcmp(input, "help") == 0){
+      printHelp();
+      done = true;
+    }
+    
+  }
   return 0;
 }
 
@@ -157,7 +175,7 @@ void printWelcome(Room *currentRoom){
 
 void printHelp(){
   cout << "You must find a way to get help." << endl;
-  coout << endl;
+  cout << endl;
   cout << "Your command words are:" << endl;
   cout << "help" << endl;
   cout << "go <exit>" << endl;
