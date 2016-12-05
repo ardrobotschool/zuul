@@ -9,6 +9,7 @@ void createRooms(vector<Room*> &rooms);
 Room* getRoom(vector<Room*> &rooms, const char* description);
 void printWelcome(Room* currentRoom);
 void printHelp();
+void printInventory(vector<Item*> &inventory);
 
 int main(){
   //Initialize rooms.
@@ -18,6 +19,8 @@ int main(){
   hill->setExit("west", getRoom(rooms, "in the front yard"));
   rooms.push_back(hill);
   getRoom(rooms, "in the front yard")->setExit("east", hill);
+  //Initialize inventory:
+  vector<Item*> inventory;
 
   cout << "Start typing your commands. Type \"help\" for a list of available commands." << endl;
   char input[128];
@@ -29,10 +32,15 @@ int main(){
     for(int i = 0; input[i]; i++){
       input[i] = tolower(input[i]);
     }
-    
-    if(strcmp(input, "help") == 0){
+
+    if(strcmp(input, "quit") == 0){
+      return 0;
+    }
+    else if(strcmp(input, "help") == 0){
       printHelp();
-      done = true;
+    }
+    else if(strcmp(input, "inventory") == 0){
+      printInventory(inventory);
     }
     
   }
@@ -183,4 +191,12 @@ void printHelp(){
   cout << "inventory" << endl;
   cout << "take <item>" << endl;
   cout << "drop <item>" << endl;
+}
+
+void printInventory(vector<Item*> &inventory){
+  cout << "Your items:" << endl;
+  for(vector<Item*>::iterator it = inventory.begin(); it != inventory.end(); it++){
+    cout << (*it)->getDescription() << endl;
+  }
+  cout << endl;
 }
