@@ -19,8 +19,9 @@ int main(){
   hill->setExit("west", getRoom(rooms, "in the front yard"));
   rooms.push_back(hill);
   getRoom(rooms, "in the front yard")->setExit("east", hill);
-  //Initialize inventory:
+  //More game variables:
   vector<Item*> inventory;
+  Room* currentRoom = getRoom(rooms, "in the dining room");
 
   cout << "Start typing your commands. Type \"help\" for a list of available commands." << endl;
   char input[128];
@@ -41,6 +42,9 @@ int main(){
     }
     else if(strcmp(input, "inventory") == 0){
       printInventory(inventory);
+    }
+    else{
+      //All other commands have to do with items and thus require multiple words. Split the input into individual words:
     }
     
   }
