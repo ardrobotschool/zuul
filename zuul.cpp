@@ -25,6 +25,8 @@ int main(){
 
   cout << "Start typing your commands. Type \"help\" for a list of available commands." << endl;
   char input[128];
+  memset(input, 0, 128);
+  
   bool done = false;
 
   while(!done){
@@ -35,8 +37,10 @@ int main(){
     }
 
     if(strcmp(input, "quit") == 0){
+      //Make quit function that erases stuff!
       return 0;
     }
+    
     else if(strcmp(input, "help") == 0){
       printHelp();
     }
@@ -44,17 +48,47 @@ int main(){
       printInventory(inventory);
     }
     else{
-      //All other commands have to do with items and thus require multiple words. Split the input into individual words:
+      //All other commands have to do with items and thus require multiple words. Split the input on the first space (following a word):
+      int spaceIndex = 0;
+      while(input[spaceIndex+1] == ' ') { //Ignore any initial spaces
+	spaceIndex++;
+	if(input[spaceIndex+1] == '\0'){
+	  spaceIndex = -1;
+	  cout << "Command not recognized." << endl;
+	  break;
+	}
+      }
+      if(spaceIndex != -1){
+	while(input[spaceIndex+1] == '\0'){
+	  spaceIndex++;
+	}
+	int firstIndex = spaceIndex;
+	char input1[spaceIndex - firstIndex];
+	for(int i=firstIndex; i < spaceIndex; i++){
+	  input1[i- firstIndex] = input[i];
+	}
+	while(input[spaceIndex] != ' '){
+	  spaceIndex++;
+	}
+	//And the rest after the space:
+	char input2[sizeof(input)-spaceIndex-2];
+	for(int i=0; input[i]; i++){
+	  input2[i] = input[spaceIndex+1+i];
+	}
+	cout << input1 << endl;
+	cout << input2 << endl;
+      }
     }
     
   }
-  return 0;
+  //Make a quit function!
+  return 0; 
 }
 
 void createRooms(vector<Room*> &rooms){
   Room *theatre, *library, *reference, *livingroom, 
     *bedroom, *outside, *graveyard, *kitchen, *deeperbasement,
-        *basement, *computerlab, *hallway, *frontyard, *diningroom;
+    *basement, *computerlab, *hallway, *frontyard, *diningroom;
   outside = new Room("outside", "You made it outside, but the only path from here leads south to the graveyard.");
   rooms.push_back(outside);
   theatre = new Room("in the theatre room", "A horror movie is playing. But who would start it, and why?");
