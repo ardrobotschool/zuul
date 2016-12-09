@@ -50,30 +50,29 @@ int main(){
     else{
       //All other commands have to do with items and thus require multiple words. Split the input on the first space (following a word):
       int spaceIndex = 0;
-      while(input[spaceIndex+1] == ' ') { //Ignore any initial spaces
+      while(input[spaceIndex] == ' ') { //Ignore any initial spaces
 	spaceIndex++;
-	if(input[spaceIndex+1] == '\0'){
+	if(input[spaceIndex] == '\0'){
 	  spaceIndex = -1;
 	  cout << "Command not recognized." << endl;
 	  break;
 	}
       }
       if(spaceIndex != -1){
-	while(input[spaceIndex+1] == '\0'){
-	  spaceIndex++;
-	}
-	int firstIndex = spaceIndex;
-	char input1[spaceIndex - firstIndex];
+	int firstIndex = spaceIndex;//Beginning of first word
+	while(input[++spaceIndex] != ' '){}//Go until the next space
+	char input1[spaceIndex - firstIndex + 1];//First word
 	for(int i=firstIndex; i < spaceIndex; i++){
 	  input1[i- firstIndex] = input[i];
 	}
-	while(input[spaceIndex] != ' '){
+	input1[spaceIndex - firstIndex] = 0;
+	while(input[spaceIndex] == ' '){//Move to beginning of next word
 	  spaceIndex++;
 	}
-	//And the rest after the space:
-	char input2[sizeof(input)-spaceIndex-2];
+	//And the rest after the space shall be input2:
+	char input2[sizeof(input)-spaceIndex+1];
 	for(int i=0; input[i]; i++){
-	  input2[i] = input[spaceIndex+1+i];
+	  input2[i] = input[spaceIndex+i];
 	}
 	cout << input1 << endl;
 	cout << input2 << endl;
