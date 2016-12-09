@@ -2,6 +2,7 @@
 #include "Room.hpp"
 #include <vector>
 #include <cctype>
+#include <algorithm>
 
 using namespace std;
 
@@ -10,6 +11,7 @@ Room* getRoom(vector<Room*> &rooms, const char* description);
 void printWelcome(Room* currentRoom);
 void printHelp();
 void printInventory(vector<Item*> &inventory);
+void goRoom(char* direction, Room* &currentRoom, vector<Item*> inventory);
 
 int main(){
   //Initialize rooms.
@@ -48,7 +50,7 @@ int main(){
       printInventory(inventory);
     }
     else{
-      //All other commands have to do with items and thus require multiple words. Split the input on the first space (following a word):
+      //All other commands require multiple words. Split the input on the first space (following a word):
       int spaceIndex = 0;
       while(input[spaceIndex] == ' ') { //Ignore any initial spaces
 	spaceIndex++;
@@ -70,12 +72,14 @@ int main(){
 	  spaceIndex++;
 	}
 	//And the rest after the space shall be input2:
-	char input2[sizeof(input)-spaceIndex+1];
+	char input2[sizeof(input)-spaceIndex];
 	for(int i=0; input[i]; i++){
 	  input2[i] = input[spaceIndex+i];
 	}
-	cout << input1 << endl;
-	cout << input2 << endl;
+	//Now we can keep looking for commands.
+	if(strcmp(input1, "go") == 0){
+	  goRoom(input2, currentRoom, inventory);
+	}
       }
     }
     
@@ -200,7 +204,7 @@ void createRooms(vector<Room*> &rooms){
 }
 
 Room* getRoom(vector<Room*> &rooms, const char* description){
-  //Returns pointer to room with given description. (Assumed to exist.)
+  //Returns pointer to room with given description, or NULL otherwise.
   for(vector<Room*>::iterator it = rooms.begin(); it != rooms.end(); it++){
     if(strcmp(description, (*it)->getDescription())==0){
       return *it;
@@ -236,4 +240,27 @@ void printInventory(vector<Item*> &inventory){
     cout << (*it)->getDescription() << endl;
   }
   cout << endl;
+}
+
+void goRoom(char* direction, Room *&currentRoom, vector<Item*> inventory){
+  Room* destination = currentRoom->getExitRoom(direction);
+  if(destination != NULL){
+    if(destination->locked){
+      //Check if the unlock item is in the inventory...
+      if(find(inventory.begin(), inventory.end(), destination->unlockItem) == inventory.end()){
+	//Unlock item isn't in the inventory
+	destination->printLockedDescription();
+	return;
+      }
+    }
+    currentRoom = destination;
+    currentRoom->printLongDescription();
+    if(currentRoom->first){
+      currentRoom->first = false;
+      currentRoom->printDiscoveryDescription();
+    }
+  }
+  else{
+    cout << "No such exit." << endl;
+  }
 }
