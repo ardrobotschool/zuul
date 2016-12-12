@@ -22,7 +22,7 @@ void Room::printDescription(){
 }
 
 void Room::printDiscoveryDescription(){
-  cout << discoveryDescription;
+  cout << discoveryDescription << endl;
 }
 
 void Room::printLockedDescription(){
@@ -39,7 +39,7 @@ void Room::printLongDescription(){
 }
 
 void Room::printExitString(){
-  cout << "Exits:";
+  cout << "Exits: ";
   //Print out all the exits.
   for(map<char*, Room*, CStrCmp>::iterator it = exits.begin(); it != exits.end(); it++){
     cout << it->first;
@@ -47,9 +47,10 @@ void Room::printExitString(){
       cout << ", ";
     }
   }
-  cout << "." << endl;
+  cout << ".";
   //Also add items.
   printItems();
+  cout << endl;
 }
 
 void Room::printItems(){

@@ -25,7 +25,8 @@ int main(){
   vector<Item*> inventory;
   Room* currentRoom = getRoom(rooms, "in the dining room");
 
-  cout << "Start typing your commands. Type \"help\" for a list of available commands." << endl;
+  printWelcome(currentRoom);
+
   char input[128];
   memset(input, 0, 128);
   
@@ -37,6 +38,7 @@ int main(){
     for(int i = 0; input[i]; i++){
       input[i] = tolower(input[i]);
     }
+    cout << endl;
 
     if(strcmp(input, "quit") == 0){
       //Make quit function that erases stuff!
