@@ -6,18 +6,20 @@
 
 using namespace std;
 
-void createRooms(vector<Room*> &rooms);
+void createRooms(vector<Room*> &rooms, Item *& phonePtr);
 Room* getRoom(vector<Room*> &rooms, const char* description);
 void printWelcome(Room* currentRoom);
 void printHelp();
 void printInventory(vector<Item*> &inventory);
-void goRoom(char* direction, Room* &currentRoom, vector<Item*> inventory);
+void goRoom(char* direction, Room* &currentRoom, vector<Item*> inventory, Room* hill, Item *satellitephone);
+void takeItem(char* itemStr, vector<Item*> &inventory, Room* currentRoom);
 
 int main(){
   //Initialize rooms.
   vector<Room*> rooms;
-  createRooms(rooms);
-  Room *hill = new Room("on the hilltop", "There is only emptiness ahead as far as the eye can see. You also see a hill to the east. It's not an easy climb"); //Winning room
+  Item *satellitephone = NULL;//Winning item
+  createRooms(rooms, satellitephone);
+  Room *hill = new Room("on the hilltop", ""); //Winning room
   hill->setExit("west", getRoom(rooms, "in the front yard"));
   rooms.push_back(hill);
   getRoom(rooms, "in the front yard")->setExit("east", hill);
@@ -80,17 +82,24 @@ int main(){
 	}
 	//Now we can keep looking for commands.
 	if(strcmp(input1, "go") == 0){
-	  goRoom(input2, currentRoom, inventory);
+	  goRoom(input2, currentRoom, inventory, hill, satellitephone);
+	}
+	else if(strcmp(input1, "take") == 0){
+	  takeItem(input2, inventory, currentRoom);
+	}
+	else{
+	  cout << "Command not recognized." << endl;
 	}
       }
     }
-    
+    cout << endl;
   }
   //Make a quit function!
   return 0; 
 }
 
-void createRooms(vector<Room*> &rooms){
+void createRooms(vector<Room*> &rooms, Item *& phonePtr){
+  //Will set the pointer to the satellitephone
   Room *theatre, *library, *reference, *livingroom, 
     *bedroom, *outside, *graveyard, *kitchen, *deeperbasement,
     *basement, *computerlab, *hallway, *frontyard, *diningroom;
@@ -108,7 +117,7 @@ void createRooms(vector<Room*> &rooms){
   rooms.push_back(diningroom);
   kitchen = new Room("in the kitchen", "There is a goblet made of gold and filled with jewelry standing on the table.");
   rooms.push_back(kitchen);
-  deeperbasement = new Room("in the deeper part of the basement", "Good thing you brought that candle. There is a snake on the floor! It's moving slowly.", "Good thing you brought that candle. There is a snake on the floor! It's moving slowly.");
+  deeperbasement = new Room("in the deeper part of the basement", "Good thing you brought that candle. There is a snake on the floor! It's moving slowly.", "It's very dark in there. Going without something to light the way is too dangerous.");
   rooms.push_back(deeperbasement);
   livingroom = new Room("in the living room", "There is an organ here. It is playing music by itself. Well, either that or you can't see the player.");
   rooms.push_back(livingroom);
@@ -200,6 +209,7 @@ void createRooms(vector<Room*> &rooms){
   Item *satellitephone = new Item("satellitephone");
   satellitephone->setPickupDescription("This phone has barely any charge left. There is no signal.");
   computerlab->items.push_back(satellitephone);
+  phonePtr = satellitephone;
         
   deeperbasement->items.push_back(new Item("cobra", "The cobra bites you as you try to grab it and you die shortly."));
   livingroom->items.push_back(new Item("organ", "As you try to carry the organ, your spinal chord cannot handle the weight and snaps. Needless to say, you die."));
@@ -244,7 +254,7 @@ void printInventory(vector<Item*> &inventory){
   cout << endl;
 }
 
-void goRoom(char* direction, Room *&currentRoom, vector<Item*> inventory){
+void goRoom(char* direction, Room *&currentRoom, vector<Item*> inventory, Room *hill, Item *satellitephone){
   Room* destination = currentRoom->getExitRoom(direction);
   if(destination != NULL){
     if(destination->locked){
@@ -258,11 +268,61 @@ void goRoom(char* direction, Room *&currentRoom, vector<Item*> inventory){
     currentRoom = destination;
     currentRoom->printLongDescription();
     if(currentRoom->first){
-      currentRoom->first = false;
+      if(currentRoom != hill){
+	currentRoom->first = false;
+      }
+      cout << endl;
       currentRoom->printDiscoveryDescription();
+      cout << endl;
     }
   }
   else{
     cout << "No such exit." << endl;
+    return;
   }
+  //Victory conditions:
+  if(currentRoom == hill){
+    if(hill->first){
+      hill->first = false;
+      if(find(inventory.begin(), inventory.end(), satellitephone) == inventory.end()){
+	cout << "This looks like a good place to get a signal. Unfortunately, your cell phone is dead." << endl;
+      }
+    }
+    if(find(inventory.begin(), inventory.end(), satellitephone) != inventory.end()){//We won!
+      cout << "You successfully make a call with the satellite phone. Help is on the way. Congratulations!" << endl;
+      //Quit!
+    }
+  }
+}
+
+void takeItem(char *itemStr, vector<Item*> &inventory, Room* currentRoom){
+  //Convert string to lower case:
+  for(int i = 0; i < strlen(itemStr); i++){
+    itemStr[i] = tolower(itemStr[i]);
+  }
+  //Look through the room's items for itemStr
+  for(vector<Item*>::iterator it = currentRoom->items.begin(); it != currentRoom->items.end(); it++){
+    //All the items currently have lower-case descriptions. If that changes, then we should convert the items' descriptions to lower case here for the comparison to function.
+    if(strcmp((*it)->getDescription(), itemStr) == 0){
+      //Matching item found
+      if((*it)->deadly){
+	cout << (*it)->getDeathDescription() << endl;
+	//Quit!
+	return;
+      }
+      //Else the item is not deadly
+      inventory.push_back(*it);
+      if((*it)->first){
+	(*it)->first = false;
+	cout << "Item picked up. " << (*it)->getPickupDescription() << endl;
+      }
+      else{
+	cout << "Item picked up." << endl;
+      }
+      currentRoom->items.erase(it);
+      return;
+    }
+  }
+  //No item with given description
+  cout << "No such item in the room." << endl;
 }

@@ -47,10 +47,9 @@ void Room::printExitString(){
       cout << ", ";
     }
   }
-  cout << ".";
+  cout << "." << endl;
   //Also add items.
   printItems();
-  cout << endl;
 }
 
 void Room::printItems(){

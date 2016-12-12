@@ -12,6 +12,6 @@ class Item{
   bool first = true;
  private:
   const char* description;
-  const char* pickupDescription;
+  const char* pickupDescription = "";
   const char* deathDescription;
 };
