@@ -13,6 +13,7 @@ void printHelp();
 void printInventory(vector<Item*> &inventory);
 void goRoom(char* direction, Room* &currentRoom, vector<Item*> inventory, Room* hill, Item *satellitephone);
 void takeItem(char* itemStr, vector<Item*> &inventory, Room* currentRoom);
+void dropItem(char* itemStr, vector<Item*> &inventory, Room* currentRoom);
 
 int main(){
   //Initialize rooms.
@@ -86,6 +87,9 @@ int main(){
 	}
 	else if(strcmp(input1, "take") == 0){
 	  takeItem(input2, inventory, currentRoom);
+	}
+	else if(strcmp(input1, "drop") == 0){
+	  dropItem(input2, inventory, currentRoom);
 	}
 	else{
 	  cout << "Command not recognized." << endl;
@@ -264,6 +268,10 @@ void goRoom(char* direction, Room *&currentRoom, vector<Item*> inventory, Room *
 	destination->printLockedDescription();
 	return;
       }
+      else{
+	//Unlock the room for the future.
+	destination->locked = false;
+      }
     }
     currentRoom = destination;
     currentRoom->printLongDescription();
@@ -325,4 +333,22 @@ void takeItem(char *itemStr, vector<Item*> &inventory, Room* currentRoom){
   }
   //No item with given description
   cout << "No such item in the room." << endl;
+}
+
+void dropItem(char *itemStr, vector<Item*> &inventory, Room* currentRoom){
+  //Convert string to lower case:
+  for(int i = 0; i < strlen(itemStr); i++){
+    itemStr[i] = tolower(itemStr[i]);
+  }
+  //Search for the item in the player's inventory. If it's there, drop it.
+  for(vector<Item*>::iterator it = inventory.begin(); it != inventory.end(); it++){
+    if(strcmp((*it)->getDescription(), itemStr) == 0){
+      currentRoom->items.push_back(*it);
+      inventory.erase(it);
+      cout << "Item dropped." << endl;
+      return;
+    }
+  }
+  //Item not found.
+  cout << "No such item in your inventory." << endl;
 }
