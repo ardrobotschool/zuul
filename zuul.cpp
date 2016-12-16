@@ -20,6 +20,7 @@ void printInventory(vector<Item*> &inventory);
 void goRoom(char* direction, Room* &currentRoom, vector<Item*> inventory, Room* hill, Item *satellitephone);
 void takeItem(char* itemStr, vector<Item*> &inventory, Room* currentRoom);
 void dropItem(char* itemStr, vector<Item*> &inventory, Room* currentRoom);
+void quit(vector<Item*> &inventory, vector<Room*> &rooms);
 
 int main(){
   //Initialize rooms.
@@ -50,7 +51,7 @@ int main(){
     cout << endl;
 
     if(strcmp(input, "quit") == 0){
-      //Make quit function that erases stuff!
+      done = true;
       return 0;
     }
     
@@ -104,7 +105,7 @@ int main(){
     }
     cout << endl;
   }
-  //Make a quit function!
+  quit(inventory, rooms);
   return 0; 
 }
 
@@ -357,4 +358,13 @@ void dropItem(char *itemStr, vector<Item*> &inventory, Room* currentRoom){
   }
   //Item not found.
   cout << "No such item in your inventory." << endl;
+}
+
+void quit(vector<Item*> &inventory, vector<Room*> &rooms){
+  for(vector<Item*>::iterator it = inventory.begin(); it != inventory.end(); it++){
+    delete *it;
+  }
+  for(vector<Room*>::iterator it = rooms.begin(); it != rooms.end(); it++){
+    delete *it;
+  }
 }
