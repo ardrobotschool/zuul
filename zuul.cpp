@@ -52,7 +52,6 @@ int main(){
 
     if(strcmp(input, "quit") == 0){
       done = true;
-      return 0;
     }
     
     else if(strcmp(input, "help") == 0){
