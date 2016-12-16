@@ -16,6 +16,7 @@ class Room{
 public:
   Room(const char* description, const char* discoveryDescription);
   Room(const char* description, const char* discoveryDescription, const char* lockedDescription);
+  ~Room();
   const char* getDescription();
   void printDescription();
   void printDiscoveryDescription();

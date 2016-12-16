@@ -13,6 +13,15 @@ Room::Room(const char* newDescription, const char* newDiscoveryDescription, cons
   lockedDescription = newLockedDescription;
 }
 
+Room::~Room(){
+  delete description;
+  delete discoveryDescription;
+  delete lockedDescription;
+  for(vector<Item*>::iterator it = items.begin(); it != items.end(); it++){
+    delete *it;
+  }
+}
+
 const char* Room::getDescription(){
   return description;
 }

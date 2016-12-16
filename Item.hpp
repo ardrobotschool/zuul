@@ -4,6 +4,7 @@ class Item{
  public:
   Item(const char* s);
   Item(const char* s, const char* c);
+  ~Item();
   const char* getDescription();
   const char* getPickupDescription();
   const char* getDeathDescription();

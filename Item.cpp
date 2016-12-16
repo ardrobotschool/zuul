@@ -11,6 +11,12 @@ Item::Item(const char* s, const char* c){
   deathDescription = c;
 }
 
+Item::~Item(){
+  delete description;
+  delete pickupDescription;
+  delete deathDescription;
+}
+
 const char* Item::getDescription(){
   return description;
 }
