@@ -17,8 +17,8 @@ Room* getRoom(vector<Room*> &rooms, const char* description);
 void printWelcome(Room* currentRoom);
 void printHelp();
 void printInventory(vector<Item*> &inventory);
-void goRoom(char* direction, Room* &currentRoom, vector<Item*> inventory, Room* hill, Item *satellitephone);
-void takeItem(char* itemStr, vector<Item*> &inventory, Room* currentRoom);
+void goRoom(char* direction, Room* &currentRoom, vector<Item*> inventory, Room* hill, Item *satellitephone, bool&done);
+void takeItem(char* itemStr, vector<Item*> &inventory, Room* currentRoom, bool &done);
 void dropItem(char* itemStr, vector<Item*> &inventory, Room* currentRoom);
 void quit(vector<Item*> &inventory, vector<Room*> &rooms);
 
@@ -89,10 +89,10 @@ int main(){
 	}
 	//Now we can keep looking for commands.
 	if(strcmp(input1, "go") == 0){
-	  goRoom(input2, currentRoom, inventory, hill, satellitephone);
+	  goRoom(input2, currentRoom, inventory, hill, satellitephone, done);
 	}
 	else if(strcmp(input1, "take") == 0){
-	  takeItem(input2, inventory, currentRoom);
+	  takeItem(input2, inventory, currentRoom, done);
 	}
 	else if(strcmp(input1, "drop") == 0){
 	  dropItem(input2, inventory, currentRoom);
@@ -264,7 +264,7 @@ void printInventory(vector<Item*> &inventory){
   cout << endl;
 }
 
-void goRoom(char* direction, Room *&currentRoom, vector<Item*> inventory, Room *hill, Item *satellitephone){
+void goRoom(char* direction, Room *&currentRoom, vector<Item*> inventory, Room *hill, Item *satellitephone, bool &done){
   Room* destination = currentRoom->getExitRoom(direction);
   if(destination != NULL){
     if(destination->locked){
@@ -304,12 +304,12 @@ void goRoom(char* direction, Room *&currentRoom, vector<Item*> inventory, Room *
     }
     if(find(inventory.begin(), inventory.end(), satellitephone) != inventory.end()){//We won!
       cout << "You successfully make a call with the satellite phone. Help is on the way. Congratulations!" << endl;
-      //Quit!
+      done = true;
     }
   }
 }
 
-void takeItem(char *itemStr, vector<Item*> &inventory, Room* currentRoom){
+void takeItem(char *itemStr, vector<Item*> &inventory, Room* currentRoom, bool &done){
   //Convert string to lower case:
   for(int i = 0; i < strlen(itemStr); i++){
     itemStr[i] = tolower(itemStr[i]);
@@ -321,7 +321,7 @@ void takeItem(char *itemStr, vector<Item*> &inventory, Room* currentRoom){
       //Matching item found
       if((*it)->deadly){
 	cout << (*it)->getDeathDescription() << endl;
-	//Quit!
+	done = true;
 	return;
       }
       //Else the item is not deadly
@@ -360,10 +360,12 @@ void dropItem(char *itemStr, vector<Item*> &inventory, Room* currentRoom){
 }
 
 void quit(vector<Item*> &inventory, vector<Room*> &rooms){
+  //Deallocate memory
   for(vector<Item*>::iterator it = inventory.begin(); it != inventory.end(); it++){
     delete *it;
   }
   for(vector<Room*>::iterator it = rooms.begin(); it != rooms.end(); it++){
     delete *it;
   }
+  cout << "Thank you for playing. Goodbye." << endl;
 }
