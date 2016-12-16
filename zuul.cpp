@@ -1,3 +1,9 @@
+/*
+ *This is a console-based adventure game wherein the player can travel between
+ *rooms and interact with items.
+ *Author: Artur Drobot. Based my same game written in Java.
+ *December 2016.
+ */
 #include <iostream>
 #include "Room.hpp"
 #include <vector>
