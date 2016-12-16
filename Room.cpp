@@ -15,7 +15,10 @@ Room::Room(const char* newDescription, const char* newDiscoveryDescription, cons
 
 Room::~Room(){
   for(map<char*, Room*, CStrCmp>::iterator it = exits.begin(); it != exits.end(); it++){
-    delete it->first;
+    delete[] it->first;
+  }
+  for(vector<Item*>::iterator it = items.begin(); it != items.end(); it++){
+    delete *it;
   }
 }
 
