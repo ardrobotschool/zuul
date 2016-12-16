@@ -1,3 +1,5 @@
+//This class represents an item that can be in a room or in the player's inventory.
+//Some items are deadly: picking these up will kill the player.
 #include <iostream>
 
 class Item{

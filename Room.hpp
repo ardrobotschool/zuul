@@ -1,3 +1,5 @@
+//Basic room class. Keeps track of the items inside it and where its exits lead to.
+//Some rooms are locked and require an item in order to open them.
 #include <iostream>
 #include <map>
 #include <cstring>
